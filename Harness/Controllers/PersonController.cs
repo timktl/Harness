@@ -20,6 +20,11 @@ namespace Harness.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetById(int id)
         {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
             var person = await _personService.GetPersonById(id);
             if (person == null)
             {

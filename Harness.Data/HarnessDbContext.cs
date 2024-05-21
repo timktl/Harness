@@ -15,7 +15,7 @@ namespace Harness.Data
         {
         }
 
-        public DbSet<Person> Persons { get; set; }
-        public DbSet<Incident> Incidents { get; set; }
+        public DbSet<Person> Person { get; set; }
+        public DbSet<Incident> Incident { get; set; }
     }
 }
