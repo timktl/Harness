@@ -20,7 +20,7 @@ namespace Harness.Data
 
         public async Task<Person> GetPersonById(int id)
         {
-            return _context.Persons.Find(id);
+            return _context.Person.Find(id);
         }
 
         public async Task<Person> AddPerson(Person person)
@@ -51,7 +51,7 @@ namespace Harness.Data
             var person = await GetPersonById(id);
             if (person != null)
             {   
-                _context.Persons.Remove(person);
+                _context.Person.Remove(person);
                 await _context.SaveChangesAsync();
                 return person;
             }
