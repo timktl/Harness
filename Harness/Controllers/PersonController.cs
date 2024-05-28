@@ -3,6 +3,7 @@ using Harness.Models.Model;
 using Harness.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Harness.Controllers
 {
@@ -34,12 +35,13 @@ namespace Harness.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] Person person)
+        public async Task<ActionResult> Create([FromBody, Required] Person person)
         {
-            if (person == null)
+            if(!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
+
 
             await _personService.AddPerson(person);
             return CreatedAtAction(nameof(GetById), new { id = person.Id }, person);
