@@ -20,7 +20,7 @@ namespace Harness.Services
             return person;
         }
 
-        public async Task<Person> AddPerson(Person person)
+        public async Task<Person?> AddPerson(Person person)
         {
             if (person == null)
             {
@@ -33,7 +33,7 @@ namespace Harness.Services
             }
         }
 
-        public async Task<Person> UpdatePerson(Person person)
+        public async Task<Person?> UpdatePerson(Person person)
         {
             if (person == null)
             {
@@ -45,7 +45,7 @@ namespace Harness.Services
                 return updatedPerson;
             }
         }
-        public async Task<Person> DeletePerson(int id)
+        public async Task<Person?> DeletePerson(int id)
         {
             if (id == null)
             {
