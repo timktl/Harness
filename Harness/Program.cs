@@ -23,6 +23,7 @@ builder.Services.AddDbContext<HarnessDbContext>(options =>
 
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

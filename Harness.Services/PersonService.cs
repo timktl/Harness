@@ -1,5 +1,7 @@
-﻿using Harness.Data.Interface;
+﻿using AutoMapper;
+using Harness.Data.Interface;
 using Harness.Models.Dto;
+using Harness.Models.Model;
 using Harness.Services.Interface;
 using System;
 
@@ -8,53 +10,54 @@ namespace Harness.Services
     public class PersonService : IPersonService
     {
         private readonly IPersonRepository _personRepository;
+        private readonly IMapper _mapper;
 
-        public PersonService(IPersonRepository personRepository)
+        public PersonService(IPersonRepository personRepository, IMapper mapper)
         {
             _personRepository = personRepository;
+            _mapper = mapper;
         }
 
         public async Task<PersonDto> GetPersonById(int id)
         {
             var person = await _personRepository.GetPersonById(id);
-            return person;
+            return _mapper.Map<PersonDto>(person);
         }
 
-        public async Task AddPerson(PersonDto person)
+        public async Task AddPerson(PersonDto personDto)
         {
-            if (person == null)
+            if (personDto == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(personDto));
             }
             else
             {
-                var addedPerson = await _personRepository.AddPerson(person);
-                return addedPerson;
+                var person = _mapper.Map<Person>(personDto);
+                await _personRepository.AddPerson(person);
             }
         }
 
-        public async Task UpdatePerson(PersonDto person)
+        public async Task UpdatePerson(PersonDto personDto)
         {
-            if (person == null)
+            if (personDto == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(personDto));
             }
             else
             {
-                var updatedPerson = await _personRepository.UpdatePerson(person);
-                return updatedPerson;
+                var person = _mapper.Map<Person>(personDto);
+                 await _personRepository.UpdatePerson(person);
             }
         }
         public async Task DeletePerson(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
-                return null;
+                throw new ArgumentNullException();
             }
             else
             {
-                var deletedPerson = await _personRepository.DeletePerson(id);
-                return deletedPerson;
+                await _personRepository.DeletePerson(id);
             }
         }
 
