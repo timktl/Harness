@@ -16,9 +16,9 @@ namespace Harness.Data
         {
             persons = new List<Person>()
             {
-                new Person { Id = 1, name = "Timothy Kuek", age = 34 },
-                new Person { Id = 2, name = "John Scully", age = 35 },
-                new Person { Id = 3, name = "Patrick Knight", age = 33}
+                new Person { Id = 1, Name = "Timothy Kuek", Age = 34 },
+                new Person { Id = 2, Name = "John Scully", Age = 35 },
+                new Person { Id = 3, Name = "Patrick Knight", Age = 33}
             };
         }
 
@@ -27,11 +27,6 @@ namespace Harness.Data
             persons.Add(newperson);
             newperson.Id = persons.Max(person => person.Id) + 1;
             return newperson;
-        }
-
-        public Person GetById(int id)
-        {
-            return persons.SingleOrDefault(r => r.Id == id);
         }
     }
 }

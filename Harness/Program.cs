@@ -1,5 +1,6 @@
 using Harness.Data;
 using Harness.Data.Interface;
+using Harness.Models.MappingProfile;
 using Harness.Services;
 using Harness.Services.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ builder.Services.AddDbContext<HarnessDbContext>(options =>
 
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddAutoMapper(typeof(PersonProfile));
 
 var app = builder.Build();
 

@@ -13,24 +13,23 @@ namespace Harness.Data
     {
         private readonly HarnessDbContext _context;
 
-        public PersonRepository(HarnessDbContext _context)
+        public PersonRepository(HarnessDbContext context)
         {
-            this._context = _context;
+            _context = context;
         }
 
-        public async Task<Person> GetPersonById(int id)
+        public async Task<Person?> GetPersonById(int id)
         {
-            return _context.Person.Find(id);
+            return await _context.Person.FindAsync(id);
         }
 
-        public async Task<Person> AddPerson(Person person)
+        public async Task AddPerson(Person person)
         {
-            _context.Add(person);
+            await _context.AddAsync(person);
             await _context.SaveChangesAsync();
-            return person;
         }
 
-        public async Task<Person> UpdatePerson(Person updatedPerson)
+        public async Task UpdatePerson(Person updatedPerson)
         {
             var trackedPerson = await GetPersonById(updatedPerson.Id);
             if (trackedPerson != null)
@@ -42,20 +41,18 @@ namespace Harness.Data
             {
                 _context.Attach(updatedPerson);
                 _context.Entry(updatedPerson).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
             }
-            return updatedPerson;
         }
 
-        public async Task<Person> DeletePerson(int id)
+        public async Task DeletePerson(int id)
         {
             var person = await GetPersonById(id);
             if (person != null)
             {   
                 _context.Person.Remove(person);
                 await _context.SaveChangesAsync();
-                return person;
             }
-            return person;
         }
     }
 }

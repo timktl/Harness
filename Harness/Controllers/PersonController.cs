@@ -1,8 +1,10 @@
 ﻿using Harness.Data;
+using Harness.Models.Dto;
 using Harness.Models.Model;
 using Harness.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Harness.Controllers
 {
@@ -18,37 +20,38 @@ namespace Harness.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetById(int id)
+        public async Task<ActionResult<PersonDto>> GetById(int id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return BadRequest();
             }
 
-            var person = await _personService.GetPersonById(id);
-            if (person == null)
+            var personDto = await _personService.GetPersonById(id);
+            if (personDto == null)
             {
                 return NotFound();
             }
-            return Ok(person);
+
+            return Ok(personDto);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] Person person)
+        public async Task<ActionResult> Create([FromBody, Required] PersonDto personDto)
         {
-            if (person == null)
+            if(!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
-            await _personService.AddPerson(person);
-            return CreatedAtAction(nameof(GetById), new { id = person.Id }, person);
+            await _personService.AddPerson(personDto);
+            return CreatedAtAction(nameof(GetById), new { id = personDto.Id }, personDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Person person)
+        public async Task<IActionResult> Update(int id, [FromBody] PersonDto personDto)
         {
-            if (person == null || person.Id != id)
+            if (personDto == null || personDto.Id != id || personDto.Id == 0)
             {
                 return BadRequest();
             }
@@ -59,7 +62,7 @@ namespace Harness.Controllers
                 return NotFound();
             }
 
-            await _personService.UpdatePerson(person);
+            await _personService.UpdatePerson(personDto);
             return NoContent();
         }
 

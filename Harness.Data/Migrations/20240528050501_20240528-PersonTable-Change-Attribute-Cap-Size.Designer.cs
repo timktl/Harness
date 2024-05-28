@@ -4,6 +4,7 @@ using Harness.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Harness.Data.Migrations
 {
     [DbContext(typeof(HarnessDbContext))]
-    partial class HarnessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240528050501_20240528-PersonTable-Change-Attribute-Cap-Size")]
+    partial class _20240528PersonTableChangeAttributeCapSize
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
