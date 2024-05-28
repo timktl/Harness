@@ -42,7 +42,6 @@ namespace Harness.Controllers
                 return BadRequest(ModelState);
             }
 
-
             await _personService.AddPerson(person);
             return CreatedAtAction(nameof(GetById), new { id = person.Id }, person);
         }

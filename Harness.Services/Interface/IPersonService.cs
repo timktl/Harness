@@ -1,4 +1,5 @@
-﻿using Harness.Models.Model;
+﻿using Harness.Models.Dto;
+using Harness.Models.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Harness.Services.Interface
 {
     public interface IPersonService
     {
-        Task<Person> GetPersonById(int id);
-        Task<Person> AddPerson(Person person);
-        Task<Person> UpdatePerson(Person person);
-        Task<Person> DeletePerson(int id);
+        Task<PersonDto> GetPersonById(int id);
+        Task AddPerson(PersonDto personDto);
+        Task UpdatePerson(PersonDto personDto);
+        Task DeletePerson(int id);
     }
 }

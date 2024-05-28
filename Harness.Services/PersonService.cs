@@ -1,5 +1,5 @@
 ﻿using Harness.Data.Interface;
-using Harness.Models.Model;
+using Harness.Models.Dto;
 using Harness.Services.Interface;
 using System;
 
@@ -14,13 +14,13 @@ namespace Harness.Services
             _personRepository = personRepository;
         }
 
-        public async Task<Person> GetPersonById(int id)
+        public async Task<PersonDto> GetPersonById(int id)
         {
             var person = await _personRepository.GetPersonById(id);
             return person;
         }
 
-        public async Task<Person?> AddPerson(Person person)
+        public async Task AddPerson(PersonDto person)
         {
             if (person == null)
             {
@@ -33,7 +33,7 @@ namespace Harness.Services
             }
         }
 
-        public async Task<Person?> UpdatePerson(Person person)
+        public async Task UpdatePerson(PersonDto person)
         {
             if (person == null)
             {
@@ -45,7 +45,7 @@ namespace Harness.Services
                 return updatedPerson;
             }
         }
-        public async Task<Person?> DeletePerson(int id)
+        public async Task DeletePerson(int id)
         {
             if (id == null)
             {
