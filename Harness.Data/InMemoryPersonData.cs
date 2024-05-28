@@ -28,10 +28,5 @@ namespace Harness.Data
             newperson.Id = persons.Max(person => person.Id) + 1;
             return newperson;
         }
-
-        public Person GetById(int id)
-        {
-            return persons.SingleOrDefault(r => r.Id == id);
-        }
     }
 }
