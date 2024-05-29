@@ -22,61 +22,105 @@ namespace Harness.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PersonDto>> GetById(int id)
         {
-            if (id == 0)
+            try
             {
-                return BadRequest();
-            }
+                if (id == 0)
+                {
+                    return BadRequest();
+                }
 
-            var personDto = await _personService.GetPersonById(id);
-            if (personDto == null)
+                var personDto = await _personService.GetPersonById(id);
+                return Ok(personDto);
+            }
+            catch (KeyNotFoundException)
             {
-                return NotFound();
+                return BadRequest("Please check your request parameter.");
             }
-
-            return Ok(personDto);
+            catch (ServiceException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Please wait and try again." });
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred. Please wait and try again." });
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult> Create([FromBody, Required] PersonDto personDto)
         {
-            if(!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            await _personService.AddPerson(personDto);
-            return CreatedAtAction(nameof(GetById), new { id = personDto.Id }, personDto);
+                await _personService.AddPerson(personDto);
+                return CreatedAtAction(nameof(GetById), new { id = personDto.Id }, personDto);
+            }
+            catch (ServiceException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Please wait and try again." });
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred. Please wait and try again." });
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] PersonDto personDto)
         {
-            if (personDto == null || personDto.Id != id || personDto.Id == 0)
+            try
             {
-                return BadRequest();
-            }
+                if (personDto == null || personDto.Id != id || personDto.Id == 0)
+                {
+                    return BadRequest();
+                }
 
-            var existingPerson = await _personService.GetPersonById(id);
-            if (existingPerson == null)
+                var existingPerson = await _personService.GetPersonById(id);
+                if (existingPerson == null)
+                {
+                    return NotFound();
+                }
+
+                await _personService.UpdatePerson(personDto);
+                return NoContent();
+            }
+            catch (ServiceException)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Please wait and try again." });
             }
-
-            await _personService.UpdatePerson(personDto);
-            return NoContent();
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred. Please wait and try again." });
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var person = await _personService.GetPersonById(id);
-            if (person == null)
+            try
             {
-                return NotFound();
+                var person = await _personService.GetPersonById(id);
+                if (person == null)
+                {
+                    return NotFound();
+                }
+
+                await _personService.DeletePerson(id);
+                return NoContent();
+            }
+            catch (ServiceException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Please wait and try again." });
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred. Please wait and try again." });
             }
 
-            await _personService.DeletePerson(id);
-            return NoContent();
         }
     }
 }
