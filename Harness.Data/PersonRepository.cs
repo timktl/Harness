@@ -59,10 +59,6 @@ namespace Harness.Data
                     _context.Entry(trackedPerson).CurrentValues.SetValues(updatedPerson);
                     await _context.SaveChangesAsync();
                 }
-                else
-                {
-                    throw new KeyNotFoundException($"Person with Id {updatedPerson.Id} not found.");
-                }
             }
             catch (SqlException ex)
             {
@@ -79,10 +75,6 @@ namespace Harness.Data
                 {
                     _context.Person.Remove(person);
                     await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    throw new KeyNotFoundException($"Person with Id {id} not found.");
                 }
             }
             catch (SqlException ex)
