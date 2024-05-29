@@ -20,8 +20,15 @@ namespace Harness.Services
 
         public async Task<PersonDto> GetPersonById(int id)
         {
-            var person = await _personRepository.GetPersonById(id);
-            return _mapper.Map<PersonDto>(person);
+            try
+            {
+                var person = await _personRepository.GetPersonById(id);
+                return _mapper.Map<PersonDto>(person);
+            }
+            catch (RepositoryException ex)
+            {
+                throw new ServiceException("An error occurred in the repository layer while fetching Person.", ex);
+            }            
         }
 
         public async Task AddPerson(PersonDto personDto)
@@ -32,8 +39,15 @@ namespace Harness.Services
             }
             else
             {
-                var person = _mapper.Map<Person>(personDto);
-                await _personRepository.AddPerson(person);
+                try
+                {
+                    var person = _mapper.Map<Person>(personDto);
+                    await _personRepository.AddPerson(person);
+                }
+                catch (RepositoryException ex)
+                {
+                    throw new ServiceException("An error occurred in the repository layer while adding Person.", ex);
+                }
             }
         }
 
@@ -45,8 +59,15 @@ namespace Harness.Services
             }
             else
             {
-                var person = _mapper.Map<Person>(personDto);
-                 await _personRepository.UpdatePerson(person);
+                try
+                {
+                    var person = _mapper.Map<Person>(personDto);
+                    await _personRepository.UpdatePerson(person);
+                }
+                catch(RepositoryException ex)
+                {
+                    throw new ServiceException("An error occurred in the repository layer while updating Person.", ex);
+                }
             }
         }
         public async Task DeletePerson(int id)
@@ -57,9 +78,23 @@ namespace Harness.Services
             }
             else
             {
-                await _personRepository.DeletePerson(id);
+                try
+                {
+                    await _personRepository.DeletePerson(id);
+                }
+                catch (RepositoryException ex)
+                {
+                    throw new ServiceException("An error occurred in the repository layer while deleting Person.", ex);
+                }
             }
         }
+    }
+}
 
+public class ServiceException : Exception
+{
+    public ServiceException(string message, Exception innerException)
+        : base(message, innerException)
+    {
     }
 }

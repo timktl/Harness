@@ -32,7 +32,7 @@ namespace Harness.Data
             }
             catch (SqlException ex)
             {
-                throw new Exception("An error occurred while retrieving Person.", ex);
+                throw new RepositoryException("An error occurred while retrieving Person.", ex);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Harness.Data
             }
             catch (SqlException ex)
             {
-                throw new Exception("An error occurred while creating Person.", ex);
+                throw new RepositoryException("An error occurred while creating Person.", ex);
             }
         }
 
@@ -62,7 +62,7 @@ namespace Harness.Data
             }
             catch (SqlException ex)
             {
-                throw new Exception("An error occurred while Updating Person.", ex);
+                throw new RepositoryException("An error occurred while Updating Person.", ex);
             }
         }
 
@@ -79,8 +79,16 @@ namespace Harness.Data
             }
             catch (SqlException ex)
             {
-                throw new Exception("An error occurred while Deleting Person.", ex);
+                throw new RepositoryException("An error occurred while Deleting Person.", ex);
             }
         }
+    }
+}
+
+public class RepositoryException : Exception
+{
+    public RepositoryException(string message, Exception innerException)
+        : base(message, innerException)
+    {
     }
 }
